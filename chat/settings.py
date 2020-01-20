@@ -43,6 +43,7 @@ TEMPLATES = (
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
+                'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
@@ -54,8 +55,19 @@ TEMPLATES = (
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
+# DATABASES = {
+#     'default': dj_database_url.config(default="postgres:///channels-example", conn_max_age=500)
+# }
+
 DATABASES = {
-    'default': dj_database_url.config(default="postgres:///channels-example", conn_max_age=500)
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'chat',  # 要连接的数据库，连接前需要创建好
+        'USER': 'ziguang',  # 连接数据库的用户名
+        'PASSWORD': 'ziguang',  # 连接数据库的密码
+        'HOST': '10.0.55.60',  # 连接主机，默认本级
+        'PORT': 3306,  # 端口 默认3306
+    }
 }
 
 AUTH_PASSWORD_VALIDATORS = (
@@ -103,7 +115,8 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "asgi_redis.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
+            # "hosts": [os.environ.get('REDIS_URL', 'redis://:uWorker@123@101.206.211.127:6379')],
+"hosts": [os.environ.get('REDIS_URL', 'redis://:uWorker@123@101.206.211.127:6379')],
         },
         "ROUTING": "chat.routing.channel_routing",
     },

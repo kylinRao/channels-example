@@ -1,25 +1,28 @@
+import logging
 import random
 import string
 from django.db import transaction
 from django.shortcuts import render, redirect
 import haikunator
 from .models import Room
-
+log = logging.getLogger(__name__)
 def about(request):
     return render(request, "chat/about.html")
 
-def new_room(request):
-    """
-    Randomly create a new room, and redirect to it.
-    """
-    new_room = None
-    while not new_room:
-        with transaction.atomic():
-            label = haikunator.haikunate()
-            if Room.objects.filter(label=label).exists():
-                continue
-            new_room = Room.objects.create(label=label)
-    return redirect(chat_room, label=label)
+# def new_room(request):
+#     """
+#     Randomly create a new room, and redirect to it.
+#     """
+#
+#     new_room = None
+#     while not new_room:
+#         log.debug("create a new room")
+#         with transaction.atomic():
+#             label = haikunator.haikunate()
+#             if Room.objects.filter(label=label).exists():
+#                 continue
+#             new_room = Room.objects.create(label=label)
+#     return redirect(chat_room, label=label)
 
 def chat_room(request, label):
     """
